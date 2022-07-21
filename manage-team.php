@@ -1,6 +1,9 @@
 <?php
 include './header.inc.php';
 include './sidebar.inc.php';
+if(isset($_SESSION['TEAM_IS_LOGIN'])){
+    redirect('team_task.php');
+}
 $id = "";
 $msg = "";
 $firstname = "";

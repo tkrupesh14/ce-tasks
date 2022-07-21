@@ -1,32 +1,37 @@
 <?php
 include './header.inc.php';
 include './sidebar.inc.php';
-if(isset($_SESSION['TEAM_IS_LOGIN'])){
-    redirect('team_task.php');
+if(!isset($_SESSION['TEAM_IS_LOGIN'])){
+    redirect('team_login.php');
 }
+$u = $_SESSION['u'];
+$uid = $_SESSION['uid'];
+$sql = "SELECT * FROM team_members where username = '$u' ";
+$run = mysqli_query($connection, $sql);
+$nm = mysqli_fetch_assoc($run);
 
-$sql = "SELECT * FROM departments ";
+
+$sql = "SELECT tasks.*,departments.name, team_members.firstname, team_members.lastname  FROM tasks, departments, team_members where departments.id =tasks.department_id AND team_members.id = tasks.team_members_id AND tasks.team_members_id = $uid";
 $run = mysqli_query($connection, $sql);
 
 if (isset($_GET['type']) && $_GET['type'] !== '' && isset($_GET['id']) && $_GET['id'] > 0) {
     $type = $_GET['type'];
     $id = $_GET['id'];
-    if ($type == 'delete') {
-        $que = mysqli_query($connection, "DELETE FROM departments WHERE id = $id");
-        redirect('departments.php');
-    }
+ 
     if ($type == 'active' || $type == 'deactive') {
         $status = 1;
         if ($type == 'deactive') {
             $status = 0;
         }
-        $que = mysqli_query($connection, "UPDATE departments SET status = '$status' WHERE id = $id");
-        redirect('departments.php');
+        $que = mysqli_query($connection, "UPDATE tasks SET status = '$status' WHERE id = $id");
+        redirect('team_task.php');
     }
 }
+
+
 ?>
 <head>
-    <title>Departments - <?= $pageTitle?></title>
+    <title>tasks - <?= $pageTitle?></title>
         
     <!-- Custom styles for this page -->
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -45,15 +50,15 @@ if (isset($_GET['type']) && $_GET['type'] !== '' && isset($_GET['id']) && $_GET[
 
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">Departments</h1>
+                <h1 class="h3 mb-0 text-gray-800">Welcome, <?= $nm['firstname'] ?></h1>
                 <a href="#"id = "button" onclick="printData();" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
             </div>
 
             <!-- DataTales Example -->
-            <a href="./manage-department.php" class="d-none d-sm-inline-block btn btn-primary shadow-sm m-2"><i class="fas fa-plus-circle fa-sm text-white-50"></i> Add New Department</a>
+           
             <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Departments</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Tasks</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -61,18 +66,22 @@ if (isset($_GET['type']) && $_GET['type'] !== '' && isset($_GET['id']) && $_GET[
                                     <thead>
                                         <tr>
                                             <th>ID #</th>
-                                            <th>Name</th>
+                                            <th>Title</th>
+                                            <th>Department </th>
+                                            <th>Team Member </th>
+                                            <th>Due Date</th>
                                             <th>Status</th>
-                                            <th colspan="2">Action</th>
                                            
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
                                         <th>ID #</th>
-                                            <th>Name</th>
+                                            <th>Title</th>
+                                            <th>Department </th>
+                                            <th>Team Member </th>
+                                            <th>Due Date</th>
                                             <th>Status</th>
-                                            <th colspan="2">Action</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
@@ -83,14 +92,18 @@ if (isset($_GET['type']) && $_GET['type'] !== '' && isset($_GET['id']) && $_GET[
 
                                                     ?>
                                                         <tr>
-                                                            <td><?= $no+=1?></td>
+                                                            <td ><?= $no+=1?></td>
+                                                        <td><a href="./task-details.php?id=<?= $row['id']?>" > <?= $row['title'] ?> </a></td>
                                                             <td><?= $row['name'] ?></td>
+                                                            <td><?= $row['firstname'] ?> <?= $row['lastname'] ?></td>
+                                                            <td><?=    date('d-M-Y', strtotime($row['due_date'])); ?></td>
+                                                            
                                                             <td>
                                                                 <?php
                                                                 if($row['status'] == '1'){
                                                                     ?>
                                                                     <a href="?id=<?= $row['id'] ?>&type=deactive">
-                                                                            <div class="badge badge-pill badge-success">Active</div>
+                                                                            <div class="badge badge-pill badge-success">Complete</div>
                                                                             </a>
                                                                             <?php
                                                                 }else{
@@ -98,16 +111,14 @@ if (isset($_GET['type']) && $_GET['type'] !== '' && isset($_GET['id']) && $_GET[
                                                                     
                                                                     ?>
                                                                     <a href="?id=<?= $row['id'] ?>&type=active">
-                                                                    <div class="badge badge-pill badge-danger">Inactive</div>
+                                                                    <div class="badge badge-pill badge-warning">Pending</div>
                                                                     </a>
 
                                                                     <?php
                                                                 }
                                                                 ?>
                                                         </td>
-                                                            <td><a href="./manage-department.php?id=<?= $row['id'] ?>&type=update" class="d-none d-sm-inline-block btn btn-primary shadow-sm m-2"> Edit</a></td>
-                                                            <td><a href="?id=<?= $row['id'] ?>&type=delete" class="d-none d-sm-inline-block btn btn-danger shadow-sm m-2">   Delete</a></td>
-                                                        </tr>
+                                                            
 
                                                     <?php
                                                 }
@@ -116,7 +127,7 @@ if (isset($_GET['type']) && $_GET['type'] !== '' && isset($_GET['id']) && $_GET[
                                                 ?>
 
                                                     <tr>
-                                                    <td colspan="4" class="text-center">No Data Found</td>
+                                                    <td colspan="10" class="text-center">No Data Found</td>
                                                     </tr>
                                                 <?php
                                             }
@@ -130,6 +141,8 @@ if (isset($_GET['type']) && $_GET['type'] !== '' && isset($_GET['id']) && $_GET[
         </div>
     </div>
 
+
+    
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <!-- Page level plugins -->
     <script src="vendor/datatables/jquery.dataTables.min.js"></script>

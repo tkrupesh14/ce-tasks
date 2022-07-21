@@ -4,24 +4,22 @@ include './db.inc.php';
 include './functions.inc.php';
 
 $msg = '';
-if(isset($_SESSION['IS_LOGIN'])){
-    redirect('index.php');
-}
 if(isset($_SESSION['TEAM_IS_LOGIN'])){
     redirect('team_task.php');
 }
-
 if(isset($_POST['loginBtn'])){
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $sql =" SELECT * FROM admin WHERE username = '$username' AND password = '$password' "; 
+    $sql =" SELECT * FROM team_members WHERE username = '$username' AND password = '$password' "; 
     $run = mysqli_query($connection, $sql);
     if(!mysqli_num_rows($run)>0){
 
         $msg = "Please enter valid login details";
     }else{
         $row = mysqli_fetch_assoc($run);
-        $_SESSION['IS_LOGIN'] = 'yes';
+        $_SESSION['TEAM_IS_LOGIN'] = 'yes';
+        $_SESSION['uid'] = $row['id'];
+        $_SESSION['u'] = $username;
         redirect('index.php');
 
     }

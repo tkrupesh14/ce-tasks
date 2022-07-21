@@ -2,6 +2,14 @@
 include './header.inc.php';
 
 include './sidebar.inc.php';
+if(isset($_SESSION['TEAM_IS_LOGIN'])){
+    redirect('team_task.php');
+}
+if(!isset($_SESSION['IS_LOGIN'] )){
+   
+    redirect('login.php');
+}
+
 $sql = "select name from admin";
 $run = mysqli_query($connection, $sql);
 $name = mysqli_fetch_assoc($run);

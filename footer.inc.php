@@ -33,7 +33,20 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="./logout.php">Logout</a>
+                    <?php
+                        if(isset($_SESSION['TEAM_IS_LOGIN'])){
+                            ?>
+
+
+                            <a class="btn btn-primary" href="./team_logout.php">Logout</a>
+                                <?php
+                        }else{
+                            ?>
+
+<a class="btn btn-primary" href="./logout.php">Logout</a>
+                            <?php
+                        }
+                    ?>
                 </div>
             </div>
         </div>

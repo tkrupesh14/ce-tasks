@@ -18,7 +18,21 @@
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
+                <?php
+                    if(isset($_SESSION['TEAM_IS_LOGIN'])){
+                        ?>
 
+<!-- Nav Item - Dashboard -->
+<li class="nav-item ">
+    <a class="nav-link" href="team_task.php">
+        <i class="fas fa-fw fa-tachometer-alt"></i>
+        <span>Your Tasks</span></a>
+</li>
+                        <?php
+                    }else{
+                        ?>
+
+               
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
                 <a class="nav-link" href="index.php">
@@ -52,7 +66,9 @@
             </li>
 
           
-
+                        <?php
+                             }
+                             ?>
             <!-- Divider -->
             <hr class="sidebar-divider">
 

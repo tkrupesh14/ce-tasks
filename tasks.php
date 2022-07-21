@@ -1,7 +1,9 @@
 <?php
 include './header.inc.php';
 include './sidebar.inc.php';
-
+if(isset($_SESSION['TEAM_IS_LOGIN'])){
+    redirect('team_task.php');
+}
 $sql = "SELECT tasks.*,departments.name, team_members.firstname, team_members.lastname  FROM tasks, departments, team_members where departments.id=tasks.department_id AND team_members.id = tasks.team_members_id";
 $run = mysqli_query($connection, $sql);
 

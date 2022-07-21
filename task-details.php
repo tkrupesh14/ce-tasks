@@ -2,6 +2,7 @@
 <?php
 include './header.inc.php';
 include './sidebar.inc.php';
+
 if (isset($_GET['id']) && $_GET['id'] > 0) {
     $id = $_GET['id'];
     $sql = "SELECT tasks.*,departments.name, team_members.firstname, team_members.lastname  FROM tasks, departments, team_members where departments.id=tasks.department_id AND team_members.id = tasks.team_members_id AND tasks.id = $id";
@@ -10,6 +11,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
     $duedate = strtotime($row['due_date']);
     $assignedOn  = strtotime($row['added_on']);
 }
+
 
 ?>
 <!DOCTYPE html>

@@ -4,10 +4,7 @@ session_start();
 include './db.inc.php';
 include './functions.inc.php';
 $pageTitle = "CE Tasks";
-if(!isset($_SESSION['IS_LOGIN'] )){
-   
-    redirect('login.php');
-}
+
 
 ?>
 
