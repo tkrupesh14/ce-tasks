@@ -42,7 +42,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="./team.php">
-                    <i class="fas fa-fw fa-chart-area"></i>
+                    <i class="fa fa-users fa-chart-area"></i>
                     <span>Team Members</span></a>
             </li>
             <li class="nav-item">

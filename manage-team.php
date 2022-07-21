@@ -12,36 +12,39 @@ $email = "";
 $password = "";
 $gender = "";
 $status = "";
+$emp_id = '';
 
 $sql = "SELECT * FROM departments";
 $run = mysqli_query($connection, $sql);
 if (isset($_GET['type']) && $_GET['type'] !== '' && isset($_GET['id']) && $_GET['id'] > 0) {
-  $type = $_GET['type'];
+    $type = $_GET['type'];
   $id = $_GET['id'];
- $row = mysqli_fetch_assoc( mysqli_query($connection, "SELECT * FROM team_members WHERE id = '$id' "));
+  $row = mysqli_fetch_assoc( mysqli_query($connection, "SELECT * FROM team_members WHERE id = '$id' "));
  $firstname = $row['firstname'];
  $lastname = $row['lastname'];
  $username = $row['username'];
  $phone = $row['phone'];
  $email = $row['email'];
-
-  }
+ $password = $row['password'];
+ 
+}
 
 if(isset($_POST['submitBtn'])){
     $firstname = $_POST['firstname'];
- $lastname = $_POST['lastname'];
- $username = $_POST['username'];
- $department_id = $_POST['department_id'];
- $phone = $_POST['phone'];
- $email = $_POST['email'];
- $password = $_POST['password'];
- $gender = $_POST['gender'];
- $status = $_POST['status'];
-  if($id == ''){
+    $lastname = $_POST['lastname'];
+    $username = $_POST['username'];
+    $department_id = $_POST['department_id'];
+    $emp_id = "CE".rand(10,10000);
+    $phone = $_POST['phone'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $gender = $_POST['gender'];
+    $status = $_POST['status'];
+    if($id == ''){
 
-    $sql = "SELECT * FROM team_members WHERE firstname = '$firstname', lastname = '$lastname, username = '$username', phone = '$phone', email = '$email' ";
+    $sql = "SELECT * FROM team_members WHERE username = '$username' ";
   }else{
-    $sql = "SELECT * FROM team_members WHERE firstname = '$firstname', lastname = '$lastname, username = '$username', phone = '$phone', email = '$email' AND id != $id";
+    $sql = "SELECT * FROM team_members WHERE username = '$username' AND id != $id";
     
   }
   if(mysqli_num_rows(mysqli_query($connection, $sql))>0){
@@ -49,9 +52,19 @@ if(isset($_POST['submitBtn'])){
   }else{
     if($id == ''){
       
-      $sql =" INSERT INTO team_members (firstname,lastname,username, department_id, phone, email,password,gender, status) values('$firstname','$lastname', '$username', $department_id, '$phone', '$email', '$password', '$gender' , $status) "; 
+      $sql =" INSERT INTO team_members (firstname,lastname,username, department_id, emp_id, phone, email,password,gender, status) values('$firstname','$lastname', '$username', $department_id, '$emp_id', '$phone', '$email', '$password', '$gender' , $status) "; 
     }else{
-        $que = mysqli_query($connection, "UPDATE team_members SET firstname = '$firstname', lastname = '$lastname, username = '$username',department_id = $department_id,  phone = '$phone', email = '$email', password = '$password', gender = '$gender', status ='$status  WHERE id = $id");
+        $que = mysqli_query($connection, "UPDATE team_members
+        set  firstname = '$firstname',
+        lastname = '$lastname',
+        username = '$username',
+        department_id = $department_id,
+        phone = '$phone',
+        email = '$email',
+        password = '$password',
+        gender = '$gender',
+        status = $status
+        where id=$id");
         redirect('team.php');
     
       }
@@ -143,10 +156,10 @@ if(isset($_POST['submitBtn'])){
                                 <div class="form-group col-md-4">
                                     <input type="text" class="form-control "
                                         id="exampleInputEmail" aria-describedby="emailHelp"
-                                        placeholder="Enter Password..." name="password">
+                                        placeholder="Enter Password..." name="password" value="<?= $password?>">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <select name="gender" id="" class="form-control" value="<?= $status?>">
+                                    <select name="gender" id="" class="form-control" value="<?= $gender?>">
                                         <option value="M">Male</option>
                                         <option value="F">Female</option>
                                         <option value="O">Other</option>

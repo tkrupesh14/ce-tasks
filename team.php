@@ -64,6 +64,7 @@ if (isset($_GET['type']) && $_GET['type'] !== '' && isset($_GET['id']) && $_GET[
                                             <th>Last Name</th>
                                             <th>username</th>
                                             <th>Department </th>
+                                            <th>Employee ID </th>
                                             <th>Contact</th>
                                             <th>Email</th>
                                             <th>Gender</th>
@@ -79,6 +80,7 @@ if (isset($_GET['type']) && $_GET['type'] !== '' && isset($_GET['id']) && $_GET[
                                             <th>Last Name</th>
                                             <th>username</th>
                                             <th>Department </th>
+                                            <th>Employee ID </th>
                                             <th>Contact</th>
                                             <th>Email</th>
                                             <th>Gender</th>
@@ -99,6 +101,7 @@ if (isset($_GET['type']) && $_GET['type'] !== '' && isset($_GET['id']) && $_GET[
                                                             <td><?= $row['lastname'] ?></td>
                                                             <td><?= $row['username'] ?></td>
                                                             <td><?= $row['name'] ?></td>
+                                                            <td><?= $row['emp_id'] ?></td>
                                                             <td><a href="tel:<?= $row['phone']?>"> <?= $row['phone'] ?> </a></td>
                                                             <td><a href="mailto:<?= $row['email']?>">  <?= $row['email'] ?></a></td>
                                                             <td>
