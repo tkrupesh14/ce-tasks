@@ -29,7 +29,7 @@ if(isset($_POST['submitBtn'])){
     
   }
   if(mysqli_num_rows(mysqli_query($connection, $sql))>0){
-    $msg = "Category Alredy Exists.";
+    $msg = "Department Alredy Exists.";
   }else{
     if($id == ''){
       
@@ -101,7 +101,13 @@ if(isset($_POST['submitBtn'])){
                                     
                                 </div>
                                 
-                                <input type="submit" name="submitBtn" id="" value="Add Department" class="btn btn-primary btn-user btn-block">
+                                <input type="submit" name="submitBtn" id="" value="<?php
+                    if(isset($_GET['type']) == 'update'){
+                        echo "Update";
+                    }else{
+                        echo "Add";
+                    }
+                ?> Department" class="btn btn-primary btn-user btn-block">
                                 <hr>
                                 <!-- <a href="index.html" class="btn btn-google btn-user btn-block">
                                     <i class="fab fa-google fa-fw"></i> Login with Google
