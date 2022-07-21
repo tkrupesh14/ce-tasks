@@ -46,8 +46,8 @@
                     <span>Team Members</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
+                <a class="nav-link" href="./tasks.php">
+                    <i class="fas fa-fw fa-tasks"></i>
                     <span>Tasks</span></a>
             </li>
 
